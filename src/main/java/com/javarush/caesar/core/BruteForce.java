@@ -3,10 +3,63 @@ package com.javarush.caesar.core;
 public class BruteForce {
 
     public String decryptByBruteForce(String encryptedText, char[] alphabet) {
+        String theBestText = "";
+        int bestScore = Integer.MIN_VALUE;
+        for (int j = 1; j < alphabet.length; j++) {
+            StringBuilder builder = new StringBuilder();
+            int key = j;
+
+            for (int i = 0; i < encryptedText.length(); i++) {
+                char ch = encryptedText.charAt(i);
+               int  index = -1;
+
+                for (int k = 0; k < alphabet.length; k++) {
+                    if (ch == alphabet[k]){
+                        index = k;
+                        break;
+                    }
+                }
+                if (index != - 1){
+                    int newIndex = Math.floorMod(index - key,alphabet.length);
+                    char newChar = alphabet[newIndex];
+                    builder.append(newChar);
+                }else {
+                    builder.append(ch);
+                }
+            }
+            String candidate = builder.toString();
+            String[] words = candidate.toLowerCase().split("\\s+");
+            int score = 0;
+
+            for (String word : words){
+                switch (word){
+                    case "и":
+                        score += 2;
+                        break;
+                    case "в":
+                        score += 2;
+                        break;
+                    case "не":
+                        score += 3;
+                        break;
+                    case "на":
+                        score += 3;
+                        break;
+                    case "что":
+                        score += 3;
+                        break;
+
+                }
+            }
+            if (score > bestScore){
+                bestScore = score;
+                theBestText = candidate;
+            }
+        }
         // TODO перебрать все ключи от 1 до alphabet.length - 1
         //  для каждого ключа расшифровать текст и оценить, похож ли он на русский:
         //  пробел после точки и запятой, длина слов, частые короткие слова
         //  вернуть вариант с лучшей оценкой
-        throw new UnsupportedOperationException("Метод decryptByBruteForce пока не написан");
+    return theBestText;
     }
 }
