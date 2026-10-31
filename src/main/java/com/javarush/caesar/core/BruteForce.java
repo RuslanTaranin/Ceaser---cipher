@@ -31,7 +31,7 @@ public class BruteForce {
             String[] words = candidate.toLowerCase().split("\\s+");
             int score = 0;
 
-            for (String word : words){
+            for (String word : words){                   //что то не очень понял как реализовать "похожее на то что это правильно".
                 switch (word){
                     case "и":
                         score += 2;

@@ -46,7 +46,7 @@ public class Cipher {
                 }
             }
             if (index == -1){
-                throw new CipherException("Данного символа не существует!");
+                builder.append(ch);
             }else {
                 int newIndex = Math.floorMod(index - shift, alphabet.length);
                 char newChar = alphabet[newIndex];

@@ -6,6 +6,7 @@ import com.javarush.caesar.exception.CipherException;
 import com.javarush.caesar.service.FileManager;
 import com.javarush.caesar.service.Validator;
 
+import java.nio.file.Files;
 import java.util.Scanner;
 
 public class MainApp {
@@ -21,8 +22,8 @@ public class MainApp {
     private final Validator validator = new Validator();
     private final Cipher cipher = new Cipher(ALPHABET);
     private final BruteForce bruteForce = new BruteForce();
-
     public static void main(String[] args) {
+
         new MainApp().run();
     }
 
@@ -64,21 +65,66 @@ public class MainApp {
     }
 
     private void encryptFile() throws CipherException {
-        // TODO спросить исходный файл, файл для результата и ключ
-        //  проверить их через validator, прочитать текст через fileManager,
-        //  зашифровать через cipher и записать результат
-        System.out.println("Режим пока не реализован");
+        System.out.println("Введите пожалуйста исходный файл");
+        String readFiles = scanner.nextLine();
+        if (validator.isFileExists(readFiles)) {
+            System.out.println("Введите куда хотите записать зашифрованные текст");
+        } else {
+            throw new CipherException("Ошибка чтения файла");
+        }
+        String writeFiles = scanner.nextLine();
+        System.out.println("Введите ключ");
+        try {
+            String keyLine = scanner.nextLine();
+            int key = Integer.parseInt(keyLine);
+
+
+            if (validator.isValidKey(key, ALPHABET)) {
+                String fileManagerStr = fileManager.readFile(readFiles);
+                String encryptFile = cipher.encrypt(fileManagerStr, key);
+                fileManager.writeFile(encryptFile, writeFiles);
+            }else{
+                System.out.println("Не корректный ввод ключа");
+            }
+            // TODO спросить исходный файл, файл для результата и ключ
+            //  проверить их через validator, прочитать текст через fileManager,
+            //  зашифровать через cipher и записать результат
+        }catch (NumberFormatException e){
+            System.out.println("Ключ должен быть числом");
+        }
     }
 
     private void decryptFile() throws CipherException {
+        System.out.println("Введите пожалуйста исходный файл");
+        String readFiles = scanner.nextLine();
+        if (validator.isFileExists(readFiles)){
+            System.out.println("Введите куда хотите записать расшифрованный текст");
+        }else {
+            throw new CipherException("Ошибка чтения файла");
+        }
+        String writeFiles = scanner.nextLine();
+        System.out.println("Введите ключ");
+        try {
+
+
+            String keyLine = scanner.nextLine();
+            int key = Integer.parseInt(keyLine);
+            if (validator.isValidKey(key, ALPHABET)) {
+                String fileManagerStr = fileManager.readFile(readFiles);
+                String decryptFile = cipher.decrypt(fileManagerStr, key);
+                fileManager.writeFile(decryptFile, writeFiles);
+            }else{
+                System.out.println("Не корректный ввод ключа");
+            }
+        }catch (NumberFormatException e){
+            System.out.println("Ключ должен быть числом");
+        }
         // TODO то же, что в encryptFile, только расшифровка
-        System.out.println("Режим пока не реализован");
     }
 
     private void bruteForceFile() throws CipherException {
         // TODO спросить зашифрованный файл и файл для результата,
         //  подобрать ключ через bruteForce и записать расшифрованный текст
-        System.out.println("Режим пока не реализован");
     }
 
     private String ask(String prompt) {
