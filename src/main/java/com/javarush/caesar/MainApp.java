@@ -123,6 +123,18 @@ public class MainApp {
     }
 
     private void bruteForceFile() throws CipherException {
+        System.out.println("Введите зашифрованный файл");
+        String encryptedFiles = scanner.nextLine();
+        if (validator.isFileExists(encryptedFiles)){
+            System.out.println("Введите файл куда хотите записать расшифрованный файл");
+        }else {
+          throw new  CipherException("Ошибка чтения файла");
+        }
+        String writeFiles = scanner.nextLine();
+        String readEncryptedFiles = fileManager.readFile(encryptedFiles);
+        String decryptedFiles = bruteForce.decryptByBruteForce(readEncryptedFiles,ALPHABET);
+        fileManager.writeFile(decryptedFiles,writeFiles);
+
         // TODO спросить зашифрованный файл и файл для результата,
         //  подобрать ключ через bruteForce и записать расшифрованный текст
     }

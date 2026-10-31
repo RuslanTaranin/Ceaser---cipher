@@ -28,29 +28,14 @@ public class BruteForce {
                 }
             }
             String candidate = builder.toString();
-            String[] words = candidate.toLowerCase().split("\\s+");
             int score = 0;
 
-            for (String word : words){                   //что то не очень понял как реализовать "похожее на то что это правильно".
-                switch (word){
-                    case "и":
-                        score += 2;
-                        break;
-                    case "в":
-                        score += 2;
-                        break;
-                    case "не":
-                        score += 3;
-                        break;
-                    case "на":
-                        score += 3;
-                        break;
-                    case "что":
-                        score += 3;
-                        break;
-
-                }
+            for (int i = 0; i < candidate.length(); i++) {
+             if (candidate.charAt(i) == ' '){
+                 score++;
+             }
             }
+            
             if (score > bestScore){
                 bestScore = score;
                 theBestText = candidate;
